@@ -19,12 +19,12 @@ const User = db.define('user', {
   },
   password: {
     type: DataTypes.STRING,
-    unique: true,
     allowNull: false,
   },
   role: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: 'normal',
   },
   status: {
     type: DataTypes.STRING,

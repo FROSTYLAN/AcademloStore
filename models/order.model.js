@@ -18,11 +18,11 @@ const Order = db.define('order', {
   },
   totalPrice: {
     allowNull: false,
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL(10, 2),
   },
   status: {
     type: DataTypes.STRING,
-    defaultValue: 'available',
+    defaultValue: 'active',
   },
 });
 

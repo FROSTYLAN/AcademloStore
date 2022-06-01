@@ -22,7 +22,7 @@ const Product = db.define('product', {
   },
   price: {
     allowNull: false,
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL(10, 2),
   },
   categoryId: {
     allowNull: false,

@@ -1,4 +1,5 @@
 const express = require('express');
+const { initModels } = require('./models/initModels');
 
 // Import database
 const { db } = require('./utils/database');
@@ -10,6 +11,8 @@ db.authenticate()
     console.log('Database authenticated');
   })
   .catch(err => console.log(err));
+
+initModels();
 
 db.sync()
   .then(() => {
