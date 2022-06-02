@@ -1,6 +1,12 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 
+// Controllers
+const { globalErrorHandler } = require('./controllers/errors.controller');
+
+// Routers
+const { usersRouter } = require('./routes/users.routes');
+
 const app = express();
 
 // Enable incoming JSON data
@@ -14,6 +20,9 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+
+// Endpoints
+app.use('/api/v1/users', usersRouter);
 
 // Global error handler
 app.use('*', globalErrorHandler);
