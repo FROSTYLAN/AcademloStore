@@ -31,6 +31,7 @@ const protectToken = catchAsync(async (req, res, next) => {
     where: { id: decoded.id, status: 'active' },
   });
 
+  console.log(user);
   if (!user) {
     return next(
       new AppError('The owner of this token is no longer available', 403)

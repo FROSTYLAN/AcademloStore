@@ -19,7 +19,6 @@ const {
   updateUser,
   deleteUser,
   login,
-  checkToken,
   getUserProducts,
   getUserOrders,
   getUserOrderById,
