@@ -14,7 +14,7 @@ const Category = db.define('category', {
   },
   status: {
     type: DataTypes.STRING,
-    defaultValue: 'available',
+    defaultValue: 'active',
   },
 });
 

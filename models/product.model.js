@@ -34,7 +34,7 @@ const Product = db.define('product', {
   },
   status: {
     type: DataTypes.STRING,
-    defaultValue: 'available',
+    defaultValue: 'active',
   },
 });
 
