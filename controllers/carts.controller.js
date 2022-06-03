@@ -125,6 +125,7 @@ const purchaseCart = catchAsync(async (req, res, next) => {
         model: ProductInCart,
         required: false,
         where: { status: 'active' },
+        include: [{ model: Product }],
       },
     ],
   });
@@ -133,26 +134,24 @@ const purchaseCart = catchAsync(async (req, res, next) => {
     return next(new AppError('Must create a cart first', 400));
   }
 
-  await cart.productInCarts.map(async productInCart => {
-    const product = await Product.findOne({
-      where: { id: productInCart.productId },
-    });
-    if (product.quantity == 0) {
-      return next(new AppError('This product is out of stock', 404));
-    } else {
-      const newQuantity = product.quantity - productInCart.quantity;
-      await product.update({ quantity: newQuantity });
-      await productInCart.update({ status: 'purchased' });
-      totalPrice += productInCart.quantity * product.price;
-    }
+  const cartPromises = cart.productInCarts.map(async productInCart => {
+    const newQuantity = productInCart.product.quantity - productInCart.quantity;
+    await productInCart.product.update({ quantity: newQuantity });
+
+    const productPrice = productInCart.quantity * +productInCart.product.price;
+    totalPrice += productPrice;
+
+    return await productInCart.update({ status: 'purchased' });
   });
+
+  await Promise.all(cartPromises);
 
   await cart.update({ status: 'purchased' });
 
   const newOrder = await Order.create({
     userId: sessionUser.id,
     cartId: cart.id,
-    totalPrice: totalPrice,
+    totalPrice,
   });
 
   res.status(200).json({ status: 'success', newOrder });
